@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OmniCode</title>
+  <link rel="stylesheet" href="/static/app.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css" />
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+
+  <!-- Markdown + syntax highlight (used to render assistant chat bubbles and
+       the plan.md tab). Loaded from CDN; offline the chat will fall back to
+       plain-text rendering rather than breaking the IDE. -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/core.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/javascript.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/typescript.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/css.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/xml.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/json.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/bash.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/rust.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/python.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/markdown.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/go.min.js" defer></script>
+
+  <!-- Monaco Editor (the VS Code editor) via AMD loader. Loaded lazily by the
+       Editor view so the chat-only flow stays fast. -->
+  <script>
+    window.MonacoLoader = {
+      loading: null,
+      load() {
+        if (window.monaco) return Promise.resolve(window.monaco);
+        if (this.loading) return this.loading;
+        this.loading = new Promise((resolve, reject) => {
+          const s = document.createElement('script');
+          s.src = 'https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.min.js';
+          s.onload = () => {
+            require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs' } });
+            require(['vs/editor/editor.main'], () => resolve(window.monaco));
+          };
+          s.onerror = reject;
+          document.head.appendChild(s);
+        });
+        return this.loading;
+      },
+    };
+  </script>
+</head>
+<body>
+  <div id="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="logo">○</div>
+        <div class="brand-text">
+          <div class="brand-name">OmniCode</div>
+          <div class="brand-sub">v0.3.0</div>
+        </div>
+      </div>
+
+      <button class="new-chat" id="new-chat-btn">
+        <span class="icon">+</span> New session
+      </button>
+
+      <nav class="nav">
+        <a href="#" class="nav-item active" data-view="chat">
+          <span class="icon">⌘</span> Chat
+        </a>
+        <a href="#" class="nav-item" data-view="editor">
+          <span class="icon">⎚</span> Editor
+        </a>
+        <a href="#" class="nav-item" data-view="projects">
+          <span class="icon">▣</span> Projects
+        </a>
+        <a href="#" class="nav-item" data-view="sessions">
+          <span class="icon">⏱</span> Sessions
+        </a>
+      </nav>
+
+      <div class="settings-block">
+        <div class="section-label">Settings</div>
+        <nav class="nav">
+          <a href="#" class="nav-item" data-view="providers">
+            <span class="icon">⚡</span> Providers
+          </a>
+          <a href="#" class="nav-item" data-view="endpoints">
+            <span class="icon">⇄</span> Endpoints
+          </a>
+          <a href="#" class="nav-item" data-view="ai-control">
+            <span class="icon">⌬</span> AI Control
+          </a>
+          <a href="#" class="nav-item" data-view="mcp">
+            <span class="icon">⌘</span> MCP Servers
+          </a>
+          <a href="#" class="nav-item" data-view="plugins">
+            <span class="icon">◊</span> Plugins
+          </a>
+          <a href="#" class="nav-item" data-view="skills">
+            <span class="icon">✦</span> Skills
+          </a>
+          <a href="#" class="nav-item" data-view="agents">
+            <span class="icon">◉</span> Agents
+          </a>
+          <a href="#" class="nav-item" data-view="database">
+            <span class="icon">▤</span> Database
+          </a>
+          <a href="#" class="nav-item" data-view="secrets">
+            <span class="icon">⚿</span> API Keys
+          </a>
+          <a href="#" class="nav-item" data-view="app">
+            <span class="icon">⚙</span> App
+          </a>
+          <a href="#" class="nav-item" data-view="audit">
+            <span class="icon">▤</span> Audit
+          </a>
+        </nav>
+      </div>
+
+      <section class="side-chat" id="side-chat" aria-label="Editor chat">
+        <div class="side-chat-head">
+          <strong>Chat</strong>
+          <span id="side-chat-project"></span>
+        </div>
+        <div class="side-chat-messages" id="side-chat-messages"></div>
+        <div class="side-chat-compose">
+          <textarea id="side-chat-input" rows="2"
+            placeholder="Ask about this project. Enter to send."></textarea>
+          <button class="btn primary" id="side-chat-send" type="button">Send</button>
+        </div>
+        <div class="side-chat-status" id="side-chat-status">ready</div>
+      </section>
+
+      <div class="sidebar-footer">
+        <div class="status" id="conn-status">
+          <span class="dot ok"></span> connected
+        </div>
+        <button class="sidebar-cog" id="sidebar-cog" type="button" title="Settings">⚙</button>
+        <div class="cog-menu" id="cog-menu" hidden>
+          <button type="button" data-view="providers">Providers</button>
+          <button type="button" data-view="endpoints">Endpoints</button>
+          <button type="button" data-view="ai-control">AI Control</button>
+          <button type="button" data-view="mcp">MCP Servers</button>
+          <button type="button" data-view="plugins">Plugins</button>
+          <button type="button" data-view="skills">Skills</button>
+          <button type="button" data-view="agents">Agents</button>
+          <button type="button" data-view="database">Database</button>
+          <button type="button" data-view="secrets">API Keys</button>
+          <button type="button" data-view="app">App</button>
+          <button type="button" data-view="audit">Audit</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main" id="main">
+      <header class="topbar">
+        <div class="topbar-left">
+        <nav class="editor-menu" id="editor-menu">
+          <div class="menu" data-menu="file"><button class="menu-trigger" type="button">File</button><div class="menu-list" hidden>
+            <button data-act="open">Open… <span class="kbd">Ctrl+O</span></button>
+            <button data-act="save">Save <span class="kbd">Ctrl+S</span></button>
+            <button data-act="save-as">Save As…</button>
+            <button data-act="create-file">Create File…</button>
+            <button data-act="create-folder">Create Folder…</button>
+            <button data-act="close">Close File <span class="kbd">Ctrl+W</span></button>
+            <button data-act="close-all">Close All</button>
+            <button data-act="delete" class="danger">Delete… <span class="kbd">Del</span></button>
+            <hr/>
+            <button data-act="export-session">Export session.md</button>
+            <button data-act="import-session">Import session.md (resume project)</button>
+          </div></div>
+          <div class="menu" data-menu="edit"><button class="menu-trigger" type="button">Edit</button><div class="menu-list" hidden>
+            <button data-act="copy">Copy <span class="kbd">Ctrl+C</span></button>
+            <button data-act="paste">Paste <span class="kbd">Ctrl+V</span></button>
+            <button data-act="cut">Cut <span class="kbd">Ctrl+X</span></button>
+            <hr/>
+            <button data-act="rename">Rename…</button>
+            <button data-act="move">Move…</button>
+            <button data-act="move-folder">Move Folder…</button>
+            <hr/>
+            <button data-act="open-with">Open with (Windows app)…</button>
+            <button data-act="convert">Convert file…</button>
+            <button data-act="zip">Zip selection</button>
+            <button data-act="share">Share…</button>
+          </div></div>
+          <div class="menu" data-menu="settings"><button class="menu-trigger" type="button">Settings</button><div class="menu-list" hidden>
+            <div class="menu-section-title">Color scheme</div>
+            <button data-act="theme-default">Default Dark</button>
+            <button data-act="theme-monochrome">Monochrome Dark</button>
+            <button data-act="theme-light">Light</button>
+            <button data-act="theme-high-contrast">High Contrast</button>
+            <button data-act="theme-solarized">Solarized</button>
+            <button data-act="theme-nord">Nord</button>
+            <hr/>
+            <button data-act="rgb-mixer">RGB Mixer (token colors)</button>
+            <button data-act="skill-library">Skill Library…</button>
+            <button data-act="memory">Memory Inspector…</button>
+          </div></div>
+          <div class="menu" data-menu="layout"><button class="menu-trigger" type="button">Layout</button><div class="menu-list" hidden>
+            <button data-act="toggle-tree">Toggle File Tree</button>
+            <button data-act="toggle-tabs">Toggle Tab Bar</button>
+            <button data-act="split-right">Split Editor Right</button>
+            <button data-act="reset-layout">Reset Layout</button>
+          </div></div>
+        </nav>
+        <div class="crumbs" id="crumbs">Chat</div>
+        </div>
+        <div class="topbar-right">
+          <select id="provider-select" class="select-mini"></select>
+          <select id="model-select" class="select-mini"></select>
+          <select id="permission-mode" class="select-mini">
+            <option value="read-only">read-only</option>
+            <option value="workspace-write">workspace-write</option>
+            <option value="danger-full-access" selected>danger-full-access</option>
+          </select>
+        </div>
+      </header>
+
+      <section class="view" id="view"></section>
+      <div id="float-term" class="float-term" hidden>
+        <div class="float-term-bar" id="float-term-bar">
+          <strong>Terminal</strong>
+          <span class="float-term-cwd" id="float-term-cwd"></span>
+          <span class="spacer"></span>
+          <button type="button" data-dock="float" title="Float in the window">Float</button>
+          <button type="button" data-dock="left" title="Dock left">Left</button>
+          <button type="button" data-dock="right" title="Dock right">Right</button>
+          <button type="button" data-dock="bottom" title="Dock bottom">Bottom</button>
+          <button type="button" id="float-term-close" title="Close">✕</button>
+        </div>
+        <div class="term-host" id="float-term-host"></div>
+        <div class="float-term-resize" id="float-term-resize" title="Resize"></div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

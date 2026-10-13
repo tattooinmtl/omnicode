@@ -1,0 +1,940 @@
+﻿cargo :     Blocking waiting for file lock on package cache
+At line:3 char:10
++ cd rust; cargo clippy --workspace --all-targets --message-format=shor ...
++          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Blocking wa...n package cache:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+warning: unused imports: `HookRunResult` and `HookRunner`
+   --> crates\plugins\src\hooks.rs:299:17
+    |
+299 |     use super::{HookRunResult, HookRunner};
+    |                 ^^^^^^^^^^^^^  ^^^^^^^^^^
+    |
+    = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `PluginManagerConfig` and `PluginManager`
+   --> crates\plugins\src\hooks.rs:300:17
+    |
+300 |     use crate::{PluginManager, PluginManagerConfig};
+    |                 ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^
+
+warning: function `temp_dir` is never used
+   --> crates\plugins\src\hooks.rs:305:8
+    |
+305 |     fn temp_dir(label: &str) -> PathBuf {
+    |        ^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `write_hook_plugin` is never used
+   --> crates\plugins\src\hooks.rs:313:8
+    |
+313 |     fn write_hook_plugin(root: &Path, name: &str, pre_message: &str, post_message: &str) {
+    |        ^^^^^^^^^^^^^^^^^
+
+warning: function `write_lifecycle_plugin` is never used
+    --> crates\plugins\src\lib.rs:2097:8
+     |
+2097 |     fn write_lifecycle_plugin(root: &Path, name: &str, version: &str) -> PathBuf {
+     |        ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `write_tool_plugin` is never used
+    --> crates\plugins\src\lib.rs:2117:8
+     |
+2117 |     fn write_tool_plugin(root: &Path, name: &str, version: &str) {
+     |        ^^^^^^^^^^^^^^^^^
+
+warning: function `write_tool_plugin_with_name` is never used
+    --> crates\plugins\src\lib.rs:2121:8
+     |
+2121 |     fn write_tool_plugin_with_name(root: &Path, name: &str, version: &str, tool_name: &str) {
+     |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: `plugins` (lib test) generated 7 warnings (run `cargo clippy --fix --lib -p plugins --tests -- ` to apply 2 
+suggestions)
+warning: very complex type used. Consider factoring parts into `type` definitions
+  --> crates\lsp\src\client.rs:22:23
+   |
+22 |     pending_requests: Arc<Mutex<BTreeMap<i64, oneshot::Sender<Result<Value, LspError>>>>>,
+   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#type_complexity
+   = note: `-W clippy::type-complexity` implied by `-W clippy::all`
+   = help: to override `-W clippy::all` add `#[allow(clippy::type_complexity)]`
+
+warning: iterating on a map's keys
+   --> crates\lsp\src\client.rs:284:31
+    |
+284 |                   let drained = pending
+    |  _______________________________^
+285 | |                     .iter()
+286 | |                     .map(|(id, _)| *id)
+    | |_______________________________________^ help: try: `pending.keys().map(|id| *id)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#iter_kv_map
+    = note: `-W clippy::iter-kv-map` implied by `-W clippy::all`
+    = help: to override `-W clippy::all` add `#[allow(clippy::iter_kv_map)]`
+
+warning: unused `self` argument
+   --> crates\lsp\src\client.rs:297:30
+    |
+297 |     fn spawn_stderr_drain<R>(&self, stderr: R)
+    |                              ^^^^^
+    |
+    = help: consider refactoring to an associated function
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unused_self
+    = note: `-W clippy::unused-self` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::unused_self)]`
+
+warning: this function has too many lines (111/100)
+  --> crates\lsp\src\lib.rs:44:5
+   |
+44 |     fn write_mock_server_script(root: &std::path::Path) -> PathBuf {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#too_many_lines
+   = note: `-W clippy::too-many-lines` implied by `-W clippy::pedantic`
+   = help: to override `-W clippy::pedantic` add `#[allow(clippy::too_many_lines)]`
+
+warning: `lsp` (lib) generated 3 warnings (run `cargo clippy --fix --lib -p lsp -- ` to apply 1 suggestion)
+warning: `lsp` (lib test) generated 4 warnings (3 duplicates)
+warning: this argument is passed by value, but not consumed in the function body
+   --> crates\runtime\src\conversation.rs:132:25
+    |
+132 |         feature_config: RuntimeFeatureConfig,
+    |                         ^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#needless_pass_by_value
+    = note: `-W clippy::needless-pass-by-value` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::needless_pass_by_value)]`
+help: consider taking a reference instead
+    |
+132 |         feature_config: &RuntimeFeatureConfig,
+    |                         +
+
+warning: unused `self` argument
+   --> crates\runtime\src\hooks.rs:106:9
+    |
+106 |         &self,
+    |         ^^^^^
+    |
+    = help: consider refactoring to an associated function
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unused_self
+    = note: `-W clippy::unused-self` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::unused_self)]`
+
+warning: this function's return value is unnecessarily wrapped by `Result`
+   --> crates\runtime\src\oauth.rs:330:1
+    |
+330 | fn secure_random_bytes(bytes: usize) -> io::Result<Vec<u8>> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unnecessary_wraps
+    = note: `-W clippy::unnecessary-wraps` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::unnecessary_wraps)]`
+help: remove `Result` from the return type...
+    |
+330 - fn secure_random_bytes(bytes: usize) -> io::Result<Vec<u8>> {
+330 + fn secure_random_bytes(bytes: usize) -> std::vec::Vec<u8> {
+    |
+help: ...and then remove the surrounding `Ok()` from returning expressions
+    |
+356 -     Ok(buffer)
+356 +     buffer
+    |
+
+warning: called `map(<f>).unwrap_or(<a>)` on a `Result` value
+   --> crates\runtime\src\oauth.rs:342:21
+    |
+342 |           let nanos = SystemTime::now()
+    |  _____________________^
+343 | |             .duration_since(UNIX_EPOCH)
+344 | |             .map(|d| d.as_nanos() as u64)
+345 | |             .unwrap_or(0x9E37_79B9_7F4A_7C15);
+    | |_____________________________________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#map_unwrap_or
+    = note: `-W clippy::map-unwrap-or` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::map_unwrap_or)]`
+help: use `map_or(<a>, <f>)` instead
+    |
+344 -             .map(|d| d.as_nanos() as u64)
+345 -             .unwrap_or(0x9E37_79B9_7F4A_7C15);
+344 +             .map_or(0x9E37_79B9_7F4A_7C15, |d| d.as_nanos() as u64);
+    |
+
+warning: casting `u128` to `u64` may truncate the value
+   --> crates\runtime\src\oauth.rs:344:22
+    |
+344 |             .map(|d| d.as_nanos() as u64)
+    |                      ^^^^^^^^^^^^^^^^^^^
+    |
+    = help: if this is intentional allow the lint with `#[allow(clippy::cast_possible_truncation)]` ...
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#cast_possible_truncation
+    = note: `-W clippy::cast-possible-truncation` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::cast_possible_truncation)]`
+help: ... or use `try_from` and handle the error accordingly
+    |
+344 -             .map(|d| d.as_nanos() as u64)
+344 +             .map(|d| u64::try_from(d.as_nanos()))
+    |
+
+warning: casts from `u32` to `u64` can be expressed infallibly using `From`
+   --> crates\runtime\src\oauth.rs:347:40
+    |
+347 |         nanos ^ addr.rotate_left(17) ^ (std::process::id() as u64).wrapping_mul(0x2545_F491)
+    |                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: an `as` cast can become silently lossy if the types change in the future
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#cast_lossless
+    = note: `-W clippy::cast-lossless` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::cast_lossless)]`
+help: use `u64::from` instead
+    |
+347 -         nanos ^ addr.rotate_left(17) ^ (std::process::id() as u64).wrapping_mul(0x2545_F491)
+347 +         nanos ^ addr.rotate_left(17) ^ u64::from(std::process::id()).wrapping_mul(0x2545_F491)
+    |
+
+warning: it is more concise to loop over references to containers instead of using explicit iteration methods
+   --> crates\runtime\src\oauth.rs:349:17
+    |
+349 |     for slot in buffer.iter_mut() {
+    |                 ^^^^^^^^^^^^^^^^^ help: to write this more concisely, try: `&mut buffer`
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#explicit_iter_loop
+    = note: `-W clippy::explicit-iter-loop` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::explicit_iter_loop)]`
+
+warning: casting `u64` to `u8` may truncate the value
+   --> crates\runtime\src\oauth.rs:354:17
+    |
+354 |         *slot = (state.wrapping_mul(0x2545_F491_4F6C_DD1D) >> 33) as u8;
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: if this is intentional allow the lint with `#[allow(clippy::cast_possible_truncation)]` ...
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#cast_possible_truncation
+help: ... or use `try_from` and handle the error accordingly
+    |
+354 -         *slot = (state.wrapping_mul(0x2545_F491_4F6C_DD1D) >> 33) as u8;
+354 +         *slot = u8::try_from(state.wrapping_mul(0x2545_F491_4F6C_DD1D) >> 33);
+    |
+
+warning: unused imports: `BashCommandInput` and `execute_bash`
+   --> crates\runtime\src\bash.rs:243:17
+    |
+243 |     use super::{execute_bash, BashCommandInput};
+    |                 ^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `crate::sandbox::FilesystemIsolationMode`
+   --> crates\runtime\src\bash.rs:244:9
+    |
+244 |     use crate::sandbox::FilesystemIsolationMode;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `HookRunResult`
+   --> crates\runtime\src\hooks.rs:302:17
+    |
+302 |     use super::{HookRunResult, HookRunner};
+    |                 ^^^^^^^^^^^^^
+
+warning: function `write_echo_script` is never used
+   --> crates\runtime\src\mcp_stdio.rs:852:8
+    |
+852 |     fn write_echo_script() -> PathBuf {
+    |        ^^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `sample_bootstrap` is never used
+    --> crates\runtime\src\mcp_stdio.rs:1131:8
+     |
+1131 |     fn sample_bootstrap(script_path: &Path) -> McpClientBootstrap {
+     |        ^^^^^^^^^^^^^^^^
+
+warning: used `assert!` with an equality comparison
+   --> crates\runtime\src\sandbox.rs:361:13
+    |
+361 |             assert!(launcher.args.iter().any(|arg| arg == "--net") == status.network_active);
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#manual_assert_eq
+    = note: `-W clippy::manual-assert-eq` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::manual_assert_eq)]`
+help: replace it with `assert_eq!(..)`
+    |
+361 -             assert!(launcher.args.iter().any(|arg| arg == "--net") == status.network_active);
+361 +             assert_eq!(launcher.args.iter().any(|arg| arg == "--net"), status.network_active);
+    |
+
+warning: `runtime` (lib) generated 8 warnings (run `cargo clippy --fix --lib -p runtime -- ` to apply 3 suggestions)
+warning: `runtime` (lib test) generated 14 warnings (8 duplicates) (run `cargo clippy --fix --lib -p runtime --tests 
+-- ` to apply 4 suggestions)
+warning: more than 3 bools in a struct
+   --> crates\api\src\providers\openai_compat.rs:300:1
+    |
+300 | / struct StreamState {
+301 | |     model: String,
+302 | |     message_started: bool,
+303 | |     text_started: bool,
+...   |
+308 | |     tool_calls: BTreeMap<u32, ToolCallState>,
+309 | | }
+    | |_^
+    |
+    = help: consider using a state machine or refactoring bools into two-variant enums
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#struct_excessive_bools
+    = note: `-W clippy::struct-excessive-bools` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::struct_excessive_bools)]`
+
+warning: this function's return value is unnecessarily wrapped by `Result`
+   --> crates\api\src\providers\openai_compat.rs:500:5
+    |
+500 |     fn start_event(&self) -> Result<Option<ContentBlockStartEvent>, ApiError> {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unnecessary_wraps
+    = note: `-W clippy::unnecessary-wraps` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::unnecessary_wraps)]`
+help: remove `Result` from the return type...
+    |
+500 -     fn start_event(&self) -> Result<Option<ContentBlockStartEvent>, ApiError> {
+500 +     fn start_event(&self) -> std::option::Option<types::ContentBlockStartEvent> {
+    |
+help: ...and then remove the surrounding `Ok()` from returning expressions
+    |
+502 ~             return None;
+503 |         };
+...
+507 |             .unwrap_or_else(|| format!("tool_call_{}", self.openai_index));
+508 ~         Some(ContentBlockStartEvent {
+509 +             index: self.block_index(),
+510 +             content_block: OutputContentBlock::ToolUse {
+511 +                 id,
+512 +                 name,
+513 +                 input: json!({}),
+514 +             },
+515 +         })
+    |
+
+warning: variables can be used directly in the `format!` string
+   --> crates\commands\src\lib.rs:702:17
+    |
+702 |                 format!("Branch\n  Result           listed\n\n{}", trimmed)
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#uninlined_format_args
+    = note: `-W clippy::uninlined-format-args` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::uninlined_format_args)]`
+help: change this to
+    |
+702 -                 format!("Branch\n  Result           listed\n\n{}", trimmed)
+702 +                 format!("Branch\n  Result           listed\n\n{trimmed}")
+    |
+
+warning: variables can be used directly in the `format!` string
+   --> crates\commands\src\lib.rs:742:17
+    |
+742 |                 format!("Worktree\n  Result           listed\n\n{}", trimmed)
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#uninlined_format_args
+help: change this to
+    |
+742 -                 format!("Worktree\n  Result           listed\n\n{}", trimmed)
+742 +                 format!("Worktree\n  Result           listed\n\n{trimmed}")
+    |
+
+warning: called `map(<f>).unwrap_or(false)` on a `Result` value
+   --> crates\commands\src\lib.rs:975:5
+    |
+975 | /     Command::new("git")
+976 | |         .args([
+977 | |             "show-ref",
+978 | |             "--verify",
+...   |
+984 | |         .map(|output| output.status.success())
+985 | |         .unwrap_or(false)
+    | |_________________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#map_unwrap_or
+    = note: `-W clippy::map-unwrap-or` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::map_unwrap_or)]`
+help: use `is_ok_and(<f>)` instead
+    |
+984 -         .map(|output| output.status.success())
+985 -         .unwrap_or(false)
+984 +         .is_ok_and(|output| output.status.success())
+    |
+
+warning: called `map(<f>).unwrap_or(false)` on a `Result` value
+    --> crates\commands\src\lib.rs:999:5
+     |
+ 999 | /     Command::new(name)
+1000 | |         .arg("--version")
+1001 | |         .output()
+1002 | |         .map(|output| output.status.success())
+1003 | |         .unwrap_or(false)
+     | |_________________________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#map_unwrap_or
+help: use `is_ok_and(<f>)` instead
+     |
+1002 -         .map(|output| output.status.success())
+1003 -         .unwrap_or(false)
+1002 +         .is_ok_and(|output| output.status.success())
+     |
+
+warning: unused imports: `CommitPushPrRequest` and `handle_commit_push_pr_slash_command`
+    --> crates\commands\src\lib.rs:1650:38
+     |
+1650 |         handle_branch_slash_command, handle_commit_push_pr_slash_command,
+     |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+1655 |         CommitPushPrRequest, DefinitionSource, SkillOrigin, SkillRoot, SlashCommand,
+     |         ^^^^^^^^^^^^^^^^^^^
+     |
+     = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `std::env`
+    --> crates\commands\src\lib.rs:1659:9
+     |
+1659 |     use std::env;
+     |         ^^^^^^^^
+
+warning: function `env_lock` is never used
+    --> crates\commands\src\lib.rs:1677:8
+     |
+1677 |     fn env_lock() -> std::sync::MutexGuard<'static, ()> {
+     |        ^^^^^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `init_bare_repo` is never used
+    --> crates\commands\src\lib.rs:1735:8
+     |
+1735 |     fn init_bare_repo(label: &str) -> PathBuf {
+     |        ^^^^^^^^^^^^^^
+
+warning: this function has a `#[must_use]` attribute with no message, but returns a type already marked as 
+`#[must_use]`
+   --> crates\server\src\lib.rs:140:1
+    |
+140 | pub fn app(state: AppState) -> Router {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: either add some descriptive message or remove the attribute
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#double_must_use
+    = note: `-W clippy::double-must-use` implied by `-W clippy::all`
+    = help: to override `-W clippy::all` add `#[allow(clippy::double_must_use)]`
+
+warning: this `continue` expression is redundant
+   --> crates\server\src\lib.rs:253:64
+    |
+253 |                 Err(broadcast::error::RecvError::Lagged(_)) => continue,
+    |                                                                ^^^^^^^^
+    |
+    = help: consider dropping the `continue` expression
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#needless_continue
+    = note: `-W clippy::needless-continue` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::needless_continue)]`
+
+warning: casting `u128` to `u64` may truncate the value
+   --> crates\server\src\lib.rs:263:5
+    |
+263 | /     SystemTime::now()
+264 | |         .duration_since(UNIX_EPOCH)
+265 | |         .expect("system time should be after epoch")
+266 | |         .as_millis() as u64
+    | |___________________________^
+    |
+    = help: if this is intentional allow the lint with `#[allow(clippy::cast_possible_truncation)]` ...
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#cast_possible_truncation
+    = note: `-W clippy::cast-possible-truncation` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::cast_possible_truncation)]`
+help: ... or use `try_from` and handle the error accordingly
+    |
+263 ~     u64::try_from(SystemTime::now()
+264 +         .duration_since(UNIX_EPOCH)
+265 +         .expect("system time should be after epoch")
+266 +         .as_millis())
+    |
+
+warning: item in documentation is missing backticks
+   --> crates\api\src\providers\claw_provider.rs:691:37
+    |
+691 |     /// Point HOME, USERPROFILE and CLAW_CONFIG_HOME at an empty temp dir for
+    |                                     ^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#doc_markdown
+    = note: `-W clippy::doc-markdown` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::doc_markdown)]`
+help: try
+    |
+691 -     /// Point HOME, USERPROFILE and CLAW_CONFIG_HOME at an empty temp dir for
+691 +     /// Point HOME, USERPROFILE and `CLAW_CONFIG_HOME` at an empty temp dir for
+    |
+
+warning: `api` (lib) generated 2 warnings
+warning: `commands` (lib) generated 4 warnings (run `cargo clippy --fix --lib -p commands -- ` to apply 4 suggestions)
+warning: `commands` (lib test) generated 8 warnings (4 duplicates) (run `cargo clippy --fix --lib -p commands --tests 
+-- ` to apply 2 suggestions)
+warning: `server` (lib test) generated 3 warnings
+warning: `server` (lib) generated 3 warnings (3 duplicates)
+warning: `api` (lib test) generated 3 warnings (2 duplicates) (run `cargo clippy --fix --lib -p api --tests -- ` to 
+apply 1 suggestion)
+warning: this argument is passed by value, but not consumed in the function body
+    --> crates\tools\src\lib.rs:1808:19
+     |
+1808 |     fn new(model: String, allowed_tools: BTreeSet<String>) -> Result<Self, String> {
+     |                   ^^^^^^ help: consider changing the type to: `&str`
+     |
+     = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#needless_pass_by_value
+     = note: `-W clippy::needless-pass-by-value` implied by `-W clippy::pedantic`
+     = help: to override `-W clippy::pedantic` add `#[allow(clippy::needless_pass_by_value)]`
+
+warning: implicitly cloning a `String` by calling `to_string` on its dereferenced type
+    --> crates\tools\src\lib.rs:1809:21
+     |
+1809 |         let model = resolve_model_alias(&model).to_string();
+     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: consider using: 
+`resolve_model_alias(&model).clone()`
+     |
+     = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#implicit_clone
+     = note: `-W clippy::implicit-clone` implied by `-W clippy::pedantic`
+     = help: to override `-W clippy::pedantic` add `#[allow(clippy::implicit_clone)]`
+
+warning: this function has too many lines (103/100)
+    --> crates\tools\src\lib.rs:1821:5
+     |
+1821 |     fn stream(&mut self, request: ApiRequest) -> Result<Vec<AssistantEvent>, RuntimeError> {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#too_many_lines
+     = note: `-W clippy::too-many-lines` implied by `-W clippy::pedantic`
+     = help: to override `-W clippy::pedantic` add `#[allow(clippy::too_many_lines)]`
+
+warning: this function could have a `#[must_use]` attribute
+    --> crates\tools\src\lib.rs:2763:8
+     |
+2763 | pub fn user_home_dir() -> Option<PathBuf> {
+     |        ^^^^^^^^^^^^^
+     |
+     = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#must_use_candidate
+     = note: `-W clippy::must-use-candidate` implied by `-W clippy::pedantic`
+     = help: to override `-W clippy::pedantic` add `#[allow(clippy::must_use_candidate)]`
+help: add the attribute
+     |
+2763 + #[must_use]
+2764 | pub fn user_home_dir() -> Option<PathBuf> {
+     |
+
+warning: called `map(<f>).unwrap_or(false)` on a `Result` value
+    --> crates\tools\src\lib.rs:2887:5
+     |
+2887 | /     std::process::Command::new("sh")
+2888 | |         .arg("-lc")
+2889 | |         .arg(format!("command -v {command} >/dev/null 2>&1"))
+2890 | |         .status()
+2891 | |         .map(|status| status.success())
+2892 | |         .unwrap_or(false)
+     | |_________________________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#map_unwrap_or
+     = note: `-W clippy::map-unwrap-or` implied by `-W clippy::pedantic`
+     = help: to override `-W clippy::pedantic` add `#[allow(clippy::map_unwrap_or)]`
+help: use `is_ok_and(<f>)` instead
+     |
+2891 -         .map(|status| status.success())
+2892 -         .unwrap_or(false)
+2891 +         .is_ok_and(|status| status.success())
+     |
+
+warning: this `MutexGuard` is held across an await point
+   --> crates\api\tests\openai_compat_integration.rs:200:9
+    |
+200 |     let _lock = env_lock();
+    |         ^^^^^
+    |
+    = help: consider using an async-aware `Mutex` type or ensuring the `MutexGuard` is dropped before calling `await`
+note: these are all the await points this lock is held through
+   --> crates\api\tests\openai_compat_integration.rs:212:6
+    |
+212 |     .await;
+    |      ^^^^^
+...
+221 |         .await
+    |          ^^^^^
+...
+226 |     let captured = state.lock().await;
+    |                                 ^^^^^
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#await_holding_lock
+    = note: `-W clippy::await-holding-lock` implied by `-W clippy::all`
+    = help: to override `-W clippy::all` add `#[allow(clippy::await_holding_lock)]`
+
+warning: redundant closure
+   --> crates\api\tests\openai_compat_integration.rs:392:25
+    |
+392 |         .unwrap_or_else(|poisoned| poisoned.into_inner())
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: replace the closure with the method itself: 
+`std::sync::PoisonError::into_inner`
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#redundant_closure_for_method_calls
+    = note: `-W clippy::redundant-closure-for-method-calls` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::redundant_closure_for_method_calls)]`
+
+warning: redundant closure
+  --> crates\api\tests\provider_client_integration.rs:60:25
+   |
+60 |         .unwrap_or_else(|poisoned| poisoned.into_inner())
+   |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: replace the closure with the method itself: 
+`std::sync::PoisonError::into_inner`
+   |
+   = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#redundant_closure_for_method_calls
+   = note: `-W clippy::redundant-closure-for-method-calls` implied by `-W clippy::pedantic`
+   = help: to override `-W clippy::pedantic` add `#[allow(clippy::redundant_closure_for_method_calls)]`
+
+warning: `tools` (lib) generated 5 warnings (run `cargo clippy --fix --lib -p tools -- ` to apply 3 suggestions)
+warning: `api` (test "openai_compat_integration") generated 2 warnings (run `cargo clippy --fix --test 
+"openai_compat_integration" -p api -- ` to apply 1 suggestion)
+warning: `tools` (lib test) generated 5 warnings (5 duplicates)
+warning: `api` (test "provider_client_integration") generated 1 warning (run `cargo clippy --fix --test 
+"provider_client_integration" -p api -- ` to apply 1 suggestion)
+warning: unnested or-patterns
+   --> crates\claw-cli\src\input.rs:362:17
+    |
+362 |                 KeyCode::Char('c') | KeyCode::Char('C') => {
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unnested_or_patterns
+    = note: `-W clippy::unnested-or-patterns` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::unnested_or_patterns)]`
+help: nest the patterns
+    |
+362 -                 KeyCode::Char('c') | KeyCode::Char('C') => {
+362 +                 KeyCode::Char('c' | 'C') => {
+    |
+
+warning: unnested or-patterns
+   --> crates\claw-cli\src\input.rs:369:17
+    |
+369 |                 KeyCode::Char('j') | KeyCode::Char('J') => {
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unnested_or_patterns
+help: nest the patterns
+    |
+369 -                 KeyCode::Char('j') | KeyCode::Char('J') => {
+369 +                 KeyCode::Char('j' | 'J') => {
+    |
+
+warning: unnested or-patterns
+   --> crates\claw-cli\src\input.rs:375:17
+    |
+375 |                 KeyCode::Char('d') | KeyCode::Char('D') => {
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unnested_or_patterns
+help: nest the patterns
+    |
+375 -                 KeyCode::Char('d') | KeyCode::Char('D') => {
+375 +                 KeyCode::Char('d' | 'D') => {
+    |
+
+warning: these match arms have identical bodies
+   --> crates\claw-cli\src\input.rs:441:13
+    |
+441 |             EditorMode::Plain => self.insert_active_char(session, ch),
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+442 |             EditorMode::Insert => self.insert_active_char(session, ch),
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+445 |             EditorMode::Command => self.insert_active_char(session, ch),
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: if this is unintentional make the arms return different values
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#match_same_arms
+    = note: `-W clippy::match-same-arms` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::match_same_arms)]`
+help: otherwise merge the patterns into a single arm
+    |
+441 ~             EditorMode::Normal => self.handle_normal_char(session, ch),
+442 |             EditorMode::Visual => self.handle_visual_char(session, ch),
+443 ~             EditorMode::Plain | EditorMode::Insert | EditorMode::Command => self.insert_active_char(session, ch),
+    |
+
+warning: unused `self` argument
+   --> crates\claw-cli\src\input.rs:489:22
+    |
+489 |     fn handle_escape(&mut self, session: &mut EditSession) -> KeyAction {
+    |                      ^^^^^^^^^
+    |
+    = help: consider refactoring to an associated function
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unused_self
+    = note: `-W clippy::unused-self` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::unused_self)]`
+
+warning: these match arms have identical bodies
+   --> crates\claw-cli\src\input.rs:491:13
+    |
+491 |             EditorMode::Plain => KeyAction::Continue,
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+499 |             EditorMode::Normal => KeyAction::Continue,
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: if this is unintentional make the arms return different values
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#match_same_arms
+help: otherwise merge the patterns into a single arm
+    |
+491 ~             EditorMode::Insert => {
+492 |                 if session.cursor > 0 {
+...
+497 |             }
+498 ~             EditorMode::Plain | EditorMode::Normal => KeyAction::Continue,
+    |
+
+warning: unused `self` argument
+   --> crates\claw-cli\src\input.rs:535:26
+    |
+535 |     fn handle_submission(&mut self, line: &str) -> Submission {
+    |                          ^^^^^^^^^
+    |
+    = help: consider refactoring to an associated function
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unused_self
+
+warning: unused `self` argument
+   --> crates\claw-cli\src\input.rs:548:27
+    |
+548 |     fn insert_active_text(&mut self, session: &mut EditSession, text: &str) {
+    |                           ^^^^^^^^^
+    |
+    = help: consider refactoring to an associated function
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unused_self
+
+warning: unused `self` argument
+   --> crates\claw-cli\src\input.rs:560:18
+    |
+560 |     fn move_left(&self, session: &mut EditSession) {
+    |                  ^^^^^
+    |
+    = help: consider refactoring to an associated function
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unused_self
+
+warning: unused `self` argument
+   --> crates\claw-cli\src\input.rs:569:19
+    |
+569 |     fn move_right(&self, session: &mut EditSession) {
+    |                   ^^^^^
+    |
+    = help: consider refactoring to an associated function
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unused_self
+
+warning: unused `self` argument
+   --> crates\claw-cli\src\input.rs:577:24
+    |
+577 |     fn move_line_start(&self, session: &mut EditSession) {
+    |                        ^^^^^
+    |
+    = help: consider refactoring to an associated function
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unused_self
+
+warning: unused `self` argument
+   --> crates\claw-cli\src\input.rs:585:22
+    |
+585 |     fn move_line_end(&self, session: &mut EditSession) {
+    |                      ^^^^^
+    |
+    = help: consider refactoring to an associated function
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unused_self
+
+warning: unused `self` argument
+   --> crates\claw-cli\src\input.rs:593:16
+    |
+593 |     fn move_up(&self, session: &mut EditSession) {
+    |                ^^^^^
+    |
+    = help: consider refactoring to an associated function
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unused_self
+
+warning: unused `self` argument
+   --> crates\claw-cli\src\input.rs:600:18
+    |
+600 |     fn move_down(&self, session: &mut EditSession) {
+    |                  ^^^^^
+    |
+    = help: consider refactoring to an associated function
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unused_self
+
+warning: unused `self` argument
+   --> crates\claw-cli\src\input.rs:607:33
+    |
+607 |     fn delete_char_under_cursor(&self, session: &mut EditSession) {
+    |                                 ^^^^^
+    |
+    = help: consider refactoring to an associated function
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unused_self
+
+warning: you seem to be trying to use `match` for destructuring a single pattern. Consider using `if let`
+   --> crates\claw-cli\src\input.rs:700:26
+    |
+700 |           let next_index = match session.history_index {
+    |  __________________________^
+701 | |             Some(index) => index.saturating_sub(1),
+702 | |             None => {
+703 | |                 session.history_backup = Some(session.text.clone());
+...   |
+706 | |         };
+    | |_________^
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#single_match_else
+    = note: `-W clippy::single-match-else` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::single_match_else)]`
+help: try
+    |
+700 ~         let next_index = if let Some(index) = session.history_index { index.saturating_sub(1) } else {
+701 +             session.history_backup = Some(session.text.clone());
+702 +             self.history.len() - 1
+703 ~         };
+    |
+
+warning: casting `usize` to `isize` may wrap around the value
+   --> crates\claw-cli\src\input.rs:812:19
+    |
+812 |     let max_row = starts.len().saturating_sub(1) as isize;
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: if this is intentional, use `cast_signed()` 
+instead: `starts.len().saturating_sub(1).cast_signed()`
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#cast_possible_wrap
+    = note: `-W clippy::cast-possible-wrap` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::cast_possible_wrap)]`
+
+warning: casting `isize` to `usize` may lose the sign of the value
+   --> crates\claw-cli\src\input.rs:813:22
+    |
+813 |     let target_row = (current_row as isize + delta).clamp(0, max_row) as usize;
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: if this is intentional, use 
+`cast_unsigned()` instead: `(current_row as isize + delta).clamp(0, max_row).cast_unsigned()`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#cast_sign_loss
+    = note: `-W clippy::cast-sign-loss` implied by `-W clippy::pedantic`
+    = help: to override `-W clippy::pedantic` add `#[allow(clippy::cast_sign_loss)]`
+
+warning: casting `usize` to `isize` may wrap around the value
+   --> crates\claw-cli\src\input.rs:813:23
+    |
+813 |     let target_row = (current_row as isize + delta).clamp(0, max_row) as usize;
+    |                       ^^^^^^^^^^^^^^^^^^^^ help: if this is intentional, use `cast_signed()` instead: 
+`current_row.cast_signed()`
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#cast_possible_wrap
+
+warning: the variable `current` is used as a loop counter
+   --> crates\claw-cli\src\input.rs:839:5
+    |
+839 |     for (index, _) in text.char_indices() {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: consider using: `for (current, (index, _)) in 
+text.char_indices().enumerate()`
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#explicit_counter_loop
+    = note: `-W clippy::explicit-counter-loop` implied by `-W clippy::all`
+    = help: to override `-W clippy::all` add `#[allow(clippy::explicit_counter_loop)]`
+
+warning: this function has too many lines (104/100)
+    --> crates\claw-cli\src\main.rs:1157:5
+     |
+1157 | /     fn handle_repl_command(
+1158 | |         &mut self,
+1159 | |         command: SlashCommand,
+1160 | |     ) -> Result<bool, Box<dyn std::error::Error>> {
+     | |_________________________________________________^
+     |
+     = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#too_many_lines
+     = note: `-W clippy::too-many-lines` implied by `-W clippy::pedantic`
+     = help: to override `-W clippy::pedantic` add `#[allow(clippy::too_many_lines)]`
+
+warning: consider using `sort_by_key`
+    --> crates\claw-cli\src\main.rs:1836:5
+     |
+1836 |     sessions.sort_by(|left, right| right.modified_epoch_secs.cmp(&left.modified_epoch_secs));
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unnecessary_sort_by
+     = note: `-W clippy::unnecessary-sort-by` implied by `-W clippy::all`
+     = help: to override `-W clippy::all` add `#[allow(clippy::unnecessary_sort_by)]`
+help: try
+     |
+1836 -     sessions.sort_by(|left, right| right.modified_epoch_secs.cmp(&left.modified_epoch_secs));
+1836 +     sessions.sort_by_key(|right| std::cmp::Reverse(right.modified_epoch_secs));
+     |
+
+warning: unnecessary trailing comma
+    --> crates\claw-cli\src\main.rs:2068:74
+     |
+2068 |             lines.push(format!("  {}. {}", index + 1, file.path.display(),));
+     |                                                                          ^ help: remove the trailing comma
+     |
+     = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#unnecessary_trailing_comma
+     = note: `-W clippy::unnecessary-trailing-comma` implied by `-W clippy::pedantic`
+     = help: to override `-W clippy::pedantic` add `#[allow(clippy::unnecessary_trailing_comma)]`
+
+warning: called `map(<f>).unwrap_or(false)` on a `Result` value
+    --> crates\claw-cli\src\main.rs:2253:5
+     |
+2253 | /     Command::new("which")
+2254 | |         .arg(name)
+2255 | |         .output()
+2256 | |         .map(|output| output.status.success())
+2257 | |         .unwrap_or(false)
+     | |_________________________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#map_unwrap_or
+     = note: `-W clippy::map-unwrap-or` implied by `-W clippy::pedantic`
+     = help: to override `-W clippy::pedantic` add `#[allow(clippy::map_unwrap_or)]`
+help: use `is_ok_and(<f>)` instead
+     |
+2256 -         .map(|output| output.status.success())
+2257 -         .unwrap_or(false)
+2256 +         .is_ok_and(|output| output.status.success())
+     |
+
+warning: `claw-cli` (bin "claw") generated 24 warnings (run `cargo clippy --fix --bin "claw" -p claw-cli -- ` to apply 
+6 suggestions)
+warning: `claw-cli` (bin "claw" test) generated 24 warnings (24 duplicates)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.52s

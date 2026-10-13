@@ -1,0 +1,36 @@
+# This directory is both the source tree and the local install.
+# Keep runtime data and secrets out of git.
+
+# Built binaries and the installed copy of the UI server
+bin/
+*.exe
+*.exe~
+
+# SQLite database, including the secrets table
+*.db
+*.db-shm
+*.db-wal
+
+# Live provider keys
+agent/settings.json
+agent/settings.local.json
+.env
+.env.*
+
+# Generated local config and logs
+claw-bridge/
+uploads/
+*.log
+*.err
+
+# Rust build output
+rust/target/
+
+# Local agent sessions
+.claw/
+rust/.claw/
+rust/.claw-agents/
+
+# OS junk
+.DS_Store
+Thumbs.db

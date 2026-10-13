@@ -1,0 +1,253 @@
+{
+  "todos": [
+    {
+      "id": "T001",
+      "title": "Extend SQLite schema for projects, settings, MCP, plugins, skills, providers, sessions",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T00:41:26.750Z",
+      "updatedAt": "2026-10-12T00:42:08.447Z"
+    },
+    {
+      "id": "T002",
+      "title": "Add HTTP server to Go luncher with REST API for all settings domains",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T00:41:28.105Z",
+      "updatedAt": "2026-10-12T00:42:58.475Z"
+    },
+    {
+      "id": "T003",
+      "title": "Build OpenCode-style HTML/CSS/JS UI with sidebar, chat pane, settings panels",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T00:41:29.544Z",
+      "updatedAt": "2026-10-12T00:44:13.282Z"
+    },
+    {
+      "id": "T004",
+      "title": "Wire UI to claw-core (REPL) for live AI responses and tool calls",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T00:41:30.916Z",
+      "updatedAt": "2026-10-12T01:15:11.233Z"
+    },
+    {
+      "id": "T005",
+      "title": "Add open-browser-on-launch, install/finalize, end-to-end verify",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T00:41:32.278Z",
+      "updatedAt": "2026-10-12T01:15:14.184Z"
+    },
+    {
+      "id": "T006",
+      "title": "Add POST /api/upload endpoint (multipart, saves to ~/.omnicode/uploads)",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T15:23:01.231Z",
+      "updatedAt": "2026-10-12T15:23:33.281Z"
+    },
+    {
+      "id": "T007",
+      "title": "Always render the composer; auto-create session on first send",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T15:23:01.241Z",
+      "updatedAt": "2026-10-12T15:23:56.382Z"
+    },
+    {
+      "id": "T008",
+      "title": "Add paperclip attach button + attachment chips",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T15:23:01.250Z",
+      "updatedAt": "2026-10-12T15:23:56.392Z"
+    },
+    {
+      "id": "T009",
+      "title": "Enter sends, Shift+Enter newline, spacebar types normally",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T15:23:01.259Z",
+      "updatedAt": "2026-10-12T15:23:57.841Z"
+    },
+    {
+      "id": "T010",
+      "title": "Verify in browser: typing, space, attach, send",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T15:23:01.268Z",
+      "updatedAt": "2026-10-12T15:27:38.174Z"
+    },
+    {
+      "id": "T011",
+      "title": "Gitignore settings.json (and secret-bearing files)",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T15:37:39.173Z",
+      "updatedAt": "2026-10-12T15:38:44.148Z"
+    },
+    {
+      "id": "T012",
+      "title": "Go: load agent/settings.json providers + keys at runtime",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T15:37:39.184Z",
+      "updatedAt": "2026-10-12T15:38:44.160Z"
+    },
+    {
+      "id": "T013",
+      "title": "Persist + restore last-used provider; sticky until user changes or provider down",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T15:37:39.196Z",
+      "updatedAt": "2026-10-12T15:39:07.942Z"
+    },
+    {
+      "id": "T014",
+      "title": "Wire chat to use selected provider baseUrl+key; failover on failure",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T15:37:39.206Z",
+      "updatedAt": "2026-10-12T16:35:16.734Z"
+    },
+    {
+      "id": "T015",
+      "title": "Verify: keys load, provider sticks, fallback works",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T15:37:39.216Z",
+      "updatedAt": "2026-10-12T16:35:19.172Z"
+    },
+    {
+      "id": "T016",
+      "title": "Fix Providers/Endpoints cards showing 'undefined' (missing kind/default_model)",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T16:38:22.485Z",
+      "updatedAt": "2026-10-12T16:38:39.064Z"
+    },
+    {
+      "id": "T017",
+      "title": "Add POST /api/providers/{id}/models to fetch /v1/models live",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T16:38:22.497Z",
+      "updatedAt": "2026-10-12T16:39:20.516Z"
+    },
+    {
+      "id": "T018",
+      "title": "Model dropdown fetches live from selected endpoint",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T16:38:24.859Z",
+      "updatedAt": "2026-10-12T16:39:54.365Z"
+    },
+    {
+      "id": "T019",
+      "title": "Verify: no undefined, models load, chat works on any keyed provider",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T16:38:24.870Z",
+      "updatedAt": "2026-10-12T16:53:27.586Z"
+    },
+    {
+      "id": "T020",
+      "title": "Add 'omnicode sync-keys' to import settings.json keys into SQLite secrets",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T16:54:00.449Z",
+      "updatedAt": "2026-10-12T16:55:01.975Z"
+    },
+    {
+      "id": "T021",
+      "title": "Make providerCreds read from SQL, settings.json as fallback",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T16:54:00.460Z",
+      "updatedAt": "2026-10-12T16:56:53.369Z"
+    },
+    {
+      "id": "T022",
+      "title": "Verify keys resolve from DB, chat works, no key leaks",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T16:54:00.470Z",
+      "updatedAt": "2026-10-12T16:56:58.594Z"
+    },
+    {
+      "id": "T023",
+      "title": "Resolve settings.json alias keys (xkiro/foo) to real upstream ids",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T17:13:01.647Z",
+      "updatedAt": "2026-10-12T17:15:11.147Z"
+    },
+    {
+      "id": "T024",
+      "title": "Reject/auto-heal a remembered model the provider doesn't serve (404)",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T17:13:01.659Z",
+      "updatedAt": "2026-10-12T17:15:14.044Z"
+    },
+    {
+      "id": "T025",
+      "title": "Verify: no 404, model switch heals, full suite green",
+      "status": "done",
+      "notes": "",
+      "createdAt": "2026-10-12T17:13:04.472Z",
+      "updatedAt": "2026-10-12T17:15:14.055Z"
+    },
+    {
+      "id": "T026",
+      "title": "Verify Rust toolchain and build baseline",
+      "status": "in_progress",
+      "notes": "",
+      "createdAt": "2026-10-12T17:19:31.596Z",
+      "updatedAt": "2026-10-12T17:19:31.596Z"
+    },
+    {
+      "id": "T027",
+      "title": "Inventory crates, lint config, and unsafe/unwrap hotspots",
+      "status": "pending",
+      "notes": "",
+      "createdAt": "2026-10-12T17:19:31.607Z",
+      "updatedAt": "2026-10-12T17:19:31.607Z"
+    },
+    {
+      "id": "T028",
+      "title": "Run cargo build, clippy -D warnings, fmt check, tests",
+      "status": "pending",
+      "notes": "",
+      "createdAt": "2026-10-12T17:19:31.619Z",
+      "updatedAt": "2026-10-12T17:19:31.619Z"
+    },
+    {
+      "id": "T029",
+      "title": "Security scan (secrets + cargo audit)",
+      "status": "pending",
+      "notes": "",
+      "createdAt": "2026-10-12T17:19:31.631Z",
+      "updatedAt": "2026-10-12T17:19:31.631Z"
+    },
+    {
+      "id": "T030",
+      "title": "Deep-read hot paths for correctness bugs",
+      "status": "pending",
+      "notes": "",
+      "createdAt": "2026-10-12T17:19:31.644Z",
+      "updatedAt": "2026-10-12T17:19:31.644Z"
+    },
+    {
+      "id": "T031",
+      "title": "Self-review findings and report",
+      "status": "pending",
+      "notes": "",
+      "createdAt": "2026-10-12T17:19:31.658Z",
+      "updatedAt": "2026-10-12T17:19:31.658Z"
+    }
+  ],
+  "nextSeq": 31
+}

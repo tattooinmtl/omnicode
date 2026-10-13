@@ -1,0 +1,7 @@
+{
+  "name": "clawd-code",
+  "path": "C:\\Users\\ThePa\\Downloads\\clawd-code-main\\clawd-code-main",
+  "description": "Original Rust workspace",
+  "default_model": "claude-opus-4-6",
+  "permission_mode": "workspace-write"
+}
