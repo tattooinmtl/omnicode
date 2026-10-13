@@ -31,6 +31,10 @@ const state = {
   },
   config: null,
   consoleLines: [],
+  dock: {
+    share: { console: 1, prompt: 1.35, terminal: 1.15 },
+    closed: { console: false, prompt: false, terminal: false },
+  },
   terminal: { id: null, projectId: '', cwd: '', term: null, fit: null, source: null },
   floatTerm: { id: null, projectId: '', cwd: '', term: null, fit: null, source: null, mode: 'float', floatPos: null },
 };
@@ -400,24 +404,161 @@ function bytesFromB64(b64) {
 
 let termMount = 0;
 
+const DOCK_PANES = ['console', 'prompt', 'terminal'];
+const DOCK_LABELS = { console: 'Console', prompt: 'Prompt', terminal: 'Terminal' };
+const DOCK_MIN = { console: 140, prompt: 200, terminal: 180 };
+
+function dockOpenPanes() {
+  const open = DOCK_PANES.filter(id => !state.dock.closed[id]);
+  if (open.length) return open;
+  state.dock.closed.prompt = false;
+  return ['prompt'];
+}
+
+let dockFitQueued = false;
+function fitChatTerminal() {
+  if (dockFitQueued) return;
+  dockFitQueued = true;
+  requestAnimationFrame(() => {
+    dockFitQueued = false;
+    if (state.dock.closed.terminal || !state.terminal.fit) return;
+    state.terminal.fit.fit();
+  });
+}
+
+// Widths are shares of the open panes. Closing a pane drops it from the
+// flex sum, so the panes still open grow into the freed space. Split B also
+// sits between Console and Terminal when the prompt is closed.
+function splitPair(which) {
+  const c = !state.dock.closed.console;
+  const p = !state.dock.closed.prompt;
+  const t = !state.dock.closed.terminal;
+  if (which === 'a') return (c && p) ? ['console', 'prompt'] : null;
+  if (p && t) return ['prompt', 'terminal'];
+  if (!p && c && t) return ['console', 'terminal'];
+  return null;
+}
+
+function applyDockLayout() {
+  const dock = document.getElementById('chat-dock');
+  if (!dock) return;
+  const open = dockOpenPanes();
+  // A flex-grow sum below 1 leaves empty space. Scale the open shares so
+  // they always add up to the number of open panes and fill the dock.
+  const total = open.reduce((sum, id) => sum + (state.dock.share[id] || 1), 0) || 1;
+  DOCK_PANES.forEach(id => {
+    const pane = dock.querySelector('[data-pane="' + id + '"]');
+    if (!pane) return;
+    const isOpen = open.includes(id);
+    pane.hidden = !isOpen;
+    if (isOpen) {
+      const grow = (state.dock.share[id] || 1) / total * open.length;
+      pane.style.flex = grow + ' 1 0px';
+    }
+  });
+  const splitA = dock.querySelector('[data-split="a"]');
+  const splitB = dock.querySelector('[data-split="b"]');
+  const c = open.includes('console');
+  const p = open.includes('prompt');
+  const t = open.includes('terminal');
+  if (splitA) splitA.hidden = !(c && p);
+  if (splitB) splitB.hidden = !(t && (p || c));
+  dock.querySelectorAll('[data-close]').forEach(btn => { btn.hidden = open.length <= 1; });
+  const bar = document.getElementById('dock-restore');
+  if (bar) {
+    const closed = DOCK_PANES.filter(id => !open.includes(id));
+    bar.hidden = closed.length === 0;
+    bar.replaceChildren();
+    closed.forEach(id => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.dataset.open = id;
+      b.title = 'Show ' + DOCK_LABELS[id];
+      b.textContent = DOCK_LABELS[id];
+      bar.appendChild(b);
+    });
+  }
+  fitChatTerminal();
+}
+
 function bindDockResize() {
   const dock = document.getElementById('chat-dock');
   const handle = document.getElementById('dock-resize');
-  if (!dock || !handle || handle.dataset.bound) return;
-  handle.dataset.bound = '1';
-  let startY = 0;
-  let startH = 0;
-  handle.addEventListener('pointerdown', (e) => {
-    startY = e.clientY;
-    startH = dock.getBoundingClientRect().height;
-    handle.setPointerCapture(e.pointerId);
-  });
-  handle.addEventListener('pointermove', (e) => {
-    if (!handle.hasPointerCapture(e.pointerId)) return;
-    const next = Math.max(168, Math.min(window.innerHeight * 0.72, startH + (startY - e.clientY)));
-    dock.style.height = next + 'px';
-    if (state.terminal.fit) state.terminal.fit.fit();
-  });
+  if (!dock || !handle) return;
+  if (!dock.dataset.bound) {
+    dock.dataset.bound = '1';
+    let startY = 0;
+    let startH = 0;
+    handle.addEventListener('pointerdown', (e) => {
+      if (e.button !== 0) return;
+      startY = e.clientY;
+      startH = dock.getBoundingClientRect().height;
+      handle.setPointerCapture(e.pointerId);
+    });
+    handle.addEventListener('pointermove', (e) => {
+      if (!handle.hasPointerCapture(e.pointerId)) return;
+      const next = Math.max(168, Math.min(window.innerHeight * 0.72, startH + (startY - e.clientY)));
+      dock.style.height = next + 'px';
+      fitChatTerminal();
+    });
+
+    dock.querySelectorAll('.dock-split').forEach(split => {
+      let drag = null;
+      split.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0) return;
+        const pair = splitPair(split.dataset.split);
+        if (!pair) return;
+        const leftEl = dock.querySelector('[data-pane="' + pair[0] + '"]');
+        const rightEl = dock.querySelector('[data-pane="' + pair[1] + '"]');
+        if (!leftEl || !rightEl) return;
+        drag = {
+          leftId: pair[0],
+          rightId: pair[1],
+          startX: e.clientX,
+          leftShare: state.dock.share[pair[0]] || 1,
+          rightShare: state.dock.share[pair[1]] || 1,
+          sumPx: leftEl.getBoundingClientRect().width + rightEl.getBoundingClientRect().width,
+        };
+        split.classList.add('dragging');
+        split.setPointerCapture(e.pointerId);
+        e.preventDefault();
+      });
+      split.addEventListener('pointermove', (e) => {
+        if (!drag || !split.hasPointerCapture(e.pointerId)) return;
+        const sumShare = drag.leftShare + drag.rightShare;
+        const floor = Math.min(DOCK_MIN[drag.leftId] || 120, drag.sumPx * 0.2);
+        const ceil = drag.sumPx - Math.min(DOCK_MIN[drag.rightId] || 120, drag.sumPx * 0.2);
+        let leftPx = (drag.leftShare / sumShare) * drag.sumPx + (e.clientX - drag.startX);
+        leftPx = Math.max(floor, Math.min(ceil, leftPx));
+        const frac = drag.sumPx > 0 ? leftPx / drag.sumPx : 0.5;
+        state.dock.share[drag.leftId] = sumShare * frac;
+        state.dock.share[drag.rightId] = sumShare * (1 - frac);
+        applyDockLayout();
+      });
+      const end = () => {
+        drag = null;
+        split.classList.remove('dragging');
+      };
+      split.addEventListener('pointerup', end);
+      split.addEventListener('pointercancel', end);
+    });
+
+    dock.addEventListener('click', (e) => {
+      const closer = e.target.closest('[data-close]');
+      if (closer) {
+        const id = closer.dataset.close;
+        if (!DOCK_PANES.includes(id) || dockOpenPanes().length <= 1) return;
+        state.dock.closed[id] = true;
+        applyDockLayout();
+        return;
+      }
+      const opener = e.target.closest('[data-open]');
+      if (!opener || !DOCK_PANES.includes(opener.dataset.open)) return;
+      state.dock.closed[opener.dataset.open] = false;
+      applyDockLayout();
+    });
+  }
+  applyDockLayout();
 }
 
 async function closeTerminalSession() {
@@ -540,10 +681,11 @@ async function mountChatDock() {
   src.addEventListener('exit', () => consoleLog('Terminal closed'));
   src.onerror = () => { /* EventSource retries until we close it */ };
   term.onResize(({ cols: c, rows: r }) => {
-    if (!state.terminal.id) return;
+    if (!state.terminal.id || state.dock.closed.terminal) return;
+    if (c < 2 || r < 2) return;
     post('/api/terminal/' + state.terminal.id + '/resize', { cols: c, rows: r }).catch(() => {});
   });
-  requestAnimationFrame(() => { if (state.terminal.fit) state.terminal.fit.fit(); });
+  fitChatTerminal();
 }
 
 function editorContextPayload() {
@@ -695,12 +837,19 @@ views.chat = (root) => {
     <div class="chat-messages" id="chat-messages"></div>
     <div class="chat-input">
       <div class="chat-dock" id="chat-dock">
-        <div class="dock-resize" id="dock-resize" title="Drag to resize"></div>
-        <section class="dock-pane" aria-label="Console">
-          <div class="dock-head"><strong>Console</strong><span class="spacer"></span><span id="chat-status">ready</span></div>
+        <div class="dock-resize" id="dock-resize" title="Drag to resize height"></div>
+        <div class="dock-restore" id="dock-restore" hidden></div>
+        <section class="dock-pane" data-pane="console" aria-label="Console">
+          <div class="dock-head">
+            <strong>Console</strong>
+            <span class="spacer"></span>
+            <span id="chat-status">ready</span>
+            <button type="button" class="dock-close" data-close="console" title="Close console" aria-label="Close console">×</button>
+          </div>
           <div class="dock-log" id="dock-console-log"></div>
         </section>
-        <section class="dock-pane dock-prompt" aria-label="Prompt">
+        <div class="dock-split" data-split="a" title="Drag to resize width"></div>
+        <section class="dock-pane dock-prompt" data-pane="prompt" aria-label="Prompt">
           <div class="attach-row" id="chat-attaches" hidden></div>
           <div class="composer">
             <button class="icon-btn" id="chat-attach" title="Attach a file" aria-label="Attach a file">📎</button>
@@ -711,10 +860,14 @@ views.chat = (root) => {
           </div>
           <div class="chat-input-actions">
             <div class="left">prompt</div>
-            <div><button class="btn" id="chat-clear">Clear</button></div>
+            <div class="dock-actions">
+              <button class="btn" id="chat-clear">Clear</button>
+              <button type="button" class="dock-close" data-close="prompt" title="Close prompt" aria-label="Close prompt">×</button>
+            </div>
           </div>
         </section>
-        <section class="dock-pane" aria-label="Terminal">
+        <div class="dock-split" data-split="b" title="Drag to resize width"></div>
+        <section class="dock-pane" data-pane="terminal" aria-label="Terminal">
           <div class="dock-head">
             <strong>Terminal</strong>
             <select id="term-project" title="Project folder"></select>
@@ -722,6 +875,7 @@ views.chat = (root) => {
             <button type="button" id="term-claude" disabled>Claude</button>
             <button type="button" id="term-kimi" disabled>Kimi</button>
             <button type="button" id="term-mmx" disabled>MiniMax</button>
+            <button type="button" class="dock-close" data-close="terminal" title="Close terminal" aria-label="Close terminal">×</button>
           </div>
           <div class="term-host" id="term-host"></div>
         </section>
@@ -853,7 +1007,7 @@ views.chat = (root) => {
     renderMessages();
   };
 
-  input.focus();
+  if (!state.dock.closed.prompt) input.focus();
   if (state.consoleLines.length === 0) consoleLog('Console ready');
   else paintConsole();
   mountChatDock();
@@ -3179,4 +3333,30 @@ async function mountFloatTerm() {
   requestAnimationFrame(() => { if (state.floatTerm.fit) state.floatTerm.fit.fit(); });
 }
 
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+  document.documentElement.dataset.booted = String(Date.now());
+  init().finally(dismissSplash);
+});
+
+// The splash stays up long enough to read the mark, then fades once the
+// IDE has finished its first load. A click skips the wait.
+function closeSplashNow() {
+  const splash = document.getElementById('splash');
+  if (!splash || splash.hidden || splash.classList.contains('hide')) return;
+  splash.dataset.closing = '1';
+  splash.classList.add('hide');
+  const done = () => { splash.hidden = true; };
+  splash.addEventListener('transitionend', done, { once: true });
+  setTimeout(done, 700);
+}
+
+function dismissSplash() {
+  const splash = document.getElementById('splash');
+  if (!splash || splash.dataset.closing) return;
+  const born = Number(document.documentElement.dataset.booted || Date.now());
+  const wait = Math.max(0, 1600 - (Date.now() - born));
+  splash.dataset.closing = '1';
+  setTimeout(closeSplashNow, wait);
+}
+
+document.getElementById('splash').addEventListener('click', closeSplashNow);

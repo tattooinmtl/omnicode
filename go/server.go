@@ -233,7 +233,7 @@ func healthHandler(w http.ResponseWriter, r *http.Request) {
 	coreOK := coreExe != nil
 	writeOK(w, map[string]interface{}{
 		"status":       "ok",
-		"version":      "0.3.0",
+		"version":      "0.3.1",
 		"time":         time.Now().UTC().Format(time.RFC3339),
 		"binary_path":  exe,
 		"ui_dir":       uiDir,

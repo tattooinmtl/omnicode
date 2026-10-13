@@ -43,6 +43,27 @@ html, body {
   text-rendering: optimizeLegibility;
 }
 
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #02040c;
+  cursor: pointer;
+  transition: opacity 0.45s ease;
+}
+.splash img {
+  width: min(560px, 86vmin);
+  height: auto;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.splash.hide { opacity: 0; pointer-events: none; }
+.splash[hidden] { display: none !important; }
+
 #app {
   display: grid;
   grid-template-columns: 260px 1fr;
@@ -719,11 +740,12 @@ table.t code {
 }
 .chat-dock {
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(200px, 1fr) minmax(320px, 480px) minmax(240px, 1.15fr);
-  gap: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
   height: 232px;
   min-height: 168px;
+  min-width: 0;
   padding: 8px 10px 10px;
 }
 .dock-resize {
@@ -733,11 +755,68 @@ table.t code {
   right: 0;
   height: 6px;
   cursor: ns-resize;
-  z-index: 2;
+  z-index: 3;
+  touch-action: none;
 }
+.dock-split {
+  flex: 0 0 8px;
+  cursor: ew-resize;
+  touch-action: none;
+  position: relative;
+  z-index: 2;
+  user-select: none;
+}
+.dock-split[hidden] { display: none !important; }
+.dock-split::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 3px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--border-strong);
+}
+.dock-split:hover::before,
+.dock-split.dragging::before { background: var(--accent); }
+.dock-restore {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  margin-right: 6px;
+}
+.dock-restore[hidden] { display: none !important; }
+.dock-restore button {
+  background: var(--bg-2);
+  color: var(--text-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: 11px;
+  padding: 4px 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.dock-restore button:hover { color: var(--text-0); border-color: var(--border-strong); }
+.dock-close {
+  background: transparent;
+  border: none;
+  color: var(--text-2);
+  font-size: 15px;
+  line-height: 1;
+  padding: 0 4px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.dock-close:hover { color: var(--text-0); background: var(--bg-3); }
+.dock-close[hidden] { display: none !important; }
+.dock-actions { display: flex; align-items: center; gap: 4px; }
 .dock-pane {
   display: flex;
   flex-direction: column;
+  flex: 1 1 0;
   min-width: 0;
   min-height: 0;
   background: var(--bg-0);
@@ -745,6 +824,7 @@ table.t code {
   border-radius: var(--radius);
   overflow: hidden;
 }
+.dock-pane[hidden] { display: none !important; }
 .dock-prompt {
   background: var(--bg-1);
   padding: 8px;

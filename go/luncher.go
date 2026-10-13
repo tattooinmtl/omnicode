@@ -166,7 +166,7 @@ func uiFresh(dir string, marker []byte) bool {
 // ============================================================
 
 func printHelp() {
-	fmt.Println("OmniCode v0.3.0 - Go luncher + web IDE (Editor + tabs + plan.md)")
+	fmt.Println("OmniCode v0.3.1 - Go luncher + web IDE (Editor + tabs + plan.md)")
 	fmt.Println("")
 	fmt.Println("Usage:")
 	fmt.Println("  omnicode                       Launch the OmniCode web IDE in your browser")
@@ -369,7 +369,7 @@ func main() {
 
 	first := os.Args[1]
 	if first == "--version" || first == "-V" {
-		fmt.Println("omnicode v0.3.0 (Go web luncher + claw-core Rust IDE + Editor)")
+		fmt.Println("omnicode v0.3.1 (Go web luncher + claw-core Rust IDE + Editor)")
 		return
 	}
 	if first == "--help" || first == "-h" {
@@ -383,7 +383,7 @@ func main() {
 	case "help":
 		printHelp()
 	case "version":
-		fmt.Println("omnicode v0.3.0")
+		fmt.Println("omnicode v0.3.1")
 	case "config":
 		out, _ := json.MarshalIndent(config, "", "  ")
 		fmt.Println(string(out))
